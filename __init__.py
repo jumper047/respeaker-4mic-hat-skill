@@ -42,6 +42,8 @@ class ReSpeaker_4mic_hat(MycroftSkill):
 
 		self.add_event('recognizer_loop:wakeword',
 				self.handle_listener_wakeup)
+		self.add_event('recognizer_loop:record_begin',
+			       self.handle_listener_on)
 		self.add_event('recognizer_loop:record_end',
 				self.handle_listener_off)
 
@@ -60,6 +62,7 @@ class ReSpeaker_4mic_hat(MycroftSkill):
 	def disable(self):
 		self.log.info("Pixel Ring: Disabling")
 		self.remove_event('recognizer_loop:wakeup')
+		self.remove_event('recognizer_loop:record_begin')
 		self.remove_event('recognizer_loop:record_end')
 		self.remove_event('recognizer_loop:audio_output_start')
 		self.remove_event('recognizer_loop:audio_output_end')
@@ -73,8 +76,12 @@ class ReSpeaker_4mic_hat(MycroftSkill):
 
 	def handle_listener_wakeup(self, message):
 		self.log.info("Pixel Ring: Wakeup")
+		pixel_ring.wakeup()
+		
+	def handle_listener_on(self, message):
+		self.log.info("Pixel Ring: On")
 		pixel_ring.listen()
-
+	
 	def handle_listener_off(self, message):
 		self.log.info("Pixel Ring: Off")
 		pixel_ring.off()
