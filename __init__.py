@@ -77,6 +77,7 @@ class ReSpeaker_4mic_hat(MycroftSkill):
 	def handle_listener_wakeup(self, message):
 		self.log.info("Pixel Ring: Wakeup")
 		pixel_ring.wakeup()
+		time.sleep(0.3)
 		pixel_ring.off()
 		
 	def handle_listener_on(self, message):
