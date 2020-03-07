@@ -36,6 +36,8 @@ class ReSpeaker_4mic_hat(MycroftSkill):
         pixel_ring.set_brightness(10)
         pixel_ring.change_pattern('google')
         pixel_ring.wakeup()
+        self.listen_func = pixel_ring.listen
+        self.blink_func = pixel_ring.blink
         self.enable()
 
     def enable(self):
@@ -56,7 +58,6 @@ class ReSpeaker_4mic_hat(MycroftSkill):
                        self.handle_listener_off)
         self.add_event('mycroft.awoken', self.handle_awoken)
         self.add_event('recognizer_loop:sleep', self.handle_sleep)
-        self.add_event
         pixel_ring.off()
 
     def disable(self):
@@ -73,11 +74,13 @@ class ReSpeaker_4mic_hat(MycroftSkill):
 
     def handle_sleep(self):
         self.log.info("Pixel Ring: Dim indication")
-        pixel_ring.set_brightness(4)
+        self.listen_func = pixel_ring.silent_listen
+        self.blink_func = pixel_ring.silent_blink
 
     def handle_awoken(self):
         self.log.info("Pixel Ring: Brighten indication")
-        pixel_ring.set_brightness(10)
+        self.listen_func = pixel_ring.listen
+        self.blink_func = pixel_ring.blink
 
     def shutdown(self):
         self.log.info("Pixel Ring: Shutdown")
@@ -86,13 +89,11 @@ class ReSpeaker_4mic_hat(MycroftSkill):
 
     def handle_listener_wakeup(self, message):
         self.log.info("Pixel Ring: Wakeup")
-        pixel_ring.wakeup()
-        time.sleep(0.3)
-        pixel_ring.off()
+        self.blink_func()
 
     def handle_listener_on(self, message):
         self.log.info("Pixel Ring: On")
-        pixel_ring.listen()
+        self.listen_func()
 
     def handle_listener_off(self, message):
         self.log.info("Pixel Ring: Off")
