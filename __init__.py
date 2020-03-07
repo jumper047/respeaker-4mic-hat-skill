@@ -12,7 +12,6 @@
 #
 # All credits go to domcross (Github https://github.com/domcross)
 
-import time
 
 from mycroft.messagebus.message import Message
 from mycroft.skills.core import MycroftSkill, intent_handler
@@ -117,5 +116,6 @@ class ReSpeaker_4mic_hat(MycroftSkill):
         self.disable()
         self.speak_dialog("DisablePixelRing")
 
-    def create_skill():
-        return ReSpeaker_4mic_hat()
+
+def create_skill():
+    return ReSpeaker_4mic_hat()
